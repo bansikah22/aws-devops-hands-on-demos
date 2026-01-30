@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: A sample CloudFormation template for creating an S3 bucket.
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "my-unique-bucket-${AWS::AccountId}"
+
+Outputs:
+  BucketName:
+    Description: The name of the S3 bucket.
+    Value: !Ref S3Bucket
