@@ -29,11 +29,13 @@ The Terraform configuration is located in the `terraform` directory and consists
 The `main.tf` file contains the following:
 
 - **Provider**: The `aws` provider is used to interact with the AWS API. The `region` is set to the value of the `aws_region` variable.
-- **Resource**: The `aws_cloud9_environment_ec2` resource is used to create an EC2-based Cloud9 environment.
-  - `instance_type`: The instance type for the Cloud9 environment. This is set to the value of the `instance_type` variable.
-  - `name`: The name of the Cloud9 environment. This is set to the value of the `name` variable.
-  - `description`: A description of the Cloud9 environment.
-  - `image_id`: The ID of the image to use for the environment. We are using `amazonlinux-2-x86_64`.
+- **Resource**: The `aws_cloud9_environment_ec2` resource is used to create an EC2-based Cloud9 environment. The required attributes for this resource are:
+  - `instance_type`: The type of instance to connect to the environment.
+  - `name`: The name of the environment.
+  - `image_id`: The identifier for the Amazon Machine Image (AMI) that's used to create the EC2 instance. To choose an AMI for the instance, you must specify a valid AMI alias or a valid AWS Systems Manager (SSM) path. In this project, we are using `amazonlinux-2-x86_64`.
+
+  The following attributes are optional but recommended:
+  - `description`: The description of the environment.
   - `tags`: Tags to apply to the Cloud9 environment.
 
 ### `variables.tf`

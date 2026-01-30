@@ -67,7 +67,30 @@ To avoid incurring future charges, follow these steps to destroy the AWS resourc
 
 In a real-world scenario, you would use remote state to store the Terraform state file in a shared location, such as an S3 bucket. This allows multiple team members to collaborate on the same infrastructure. You would also use a state locking mechanism, such as a DynamoDB table, to prevent concurrent modifications to the state file.
 
-To configure remote state, you would add the following to your `main.tf` file:
+To use remote state with S3 and DynamoDB, you first need to create the S3 bucket and the DynamoDB table.
+
+### Create the S3 Bucket and DynamoDB Table
+
+You can create the S3 bucket and DynamoDB table using the AWS CLI:
+
+**Create the S3 bucket:**
+```bash
+aws s3 mb s3://my-terraform-state-bucket --region us-east-1
+```
+
+**Create the DynamoDB table:**
+```bash
+aws dynamodb create-table \
+    --table-name my-terraform-state-lock-table \
+    --attribute-definitions AttributeName=LockID,AttributeType=S \
+    --key-schema AttributeName=LockID,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --region us-east-1
+```
+
+### Configure the Backend
+
+Once you have created the S3 bucket and DynamoDB table, you can configure the backend in your `main.tf` file:
 
 ```terraform
 terraform {
@@ -79,3 +102,4 @@ terraform {
   }
 }
 ```
+The `dynamodb_table` argument is still required here, but the official documentation notes that it is for consistency. The recommended approach is to manage the DynamoDB table outside of this backend configuration.
