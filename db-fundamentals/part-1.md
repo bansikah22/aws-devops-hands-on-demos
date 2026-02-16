@@ -1,5 +1,6 @@
 Databases Fundamentals
 Note by Tandap – Date: 16/02/2026
+
 A **database** is a place where we store related data in a *structured* and *organized* manner.
 
 ### Relational Databases
