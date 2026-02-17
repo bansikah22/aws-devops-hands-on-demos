@@ -1,7 +1,16 @@
 import bcrypt from "bcryptjs";
 
 export const handler = async (event) => {
-    const { password } = JSON.parse(event.body || '{}');
+    let password;
+    try {
+        const body = JSON.parse(event.body || '{}');
+        password = body.password;
+    } catch (error) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: "Invalid JSON in request body" })
+        };
+    }
     
     if (!password) {
         return {
@@ -15,7 +24,7 @@ export const handler = async (event) => {
 
     const response = {
         statusCode: 200,
-        body: JSON.stringify("Hashed Password: " + hashedPassword)
+        body: JSON.stringify({ message: "Password hashed successfully" })
     };
 
     return response;
